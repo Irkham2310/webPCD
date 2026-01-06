@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "build:css": "tailwindcss -i ./myapp/static/css/input.css -o ./myapp/static/css/styles.css",
+    "watch:css": "tailwindcss -i ./myapp/static/css/input.css -o ./myapp/static/css/styles.css --watch"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.23",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.18"
+  }
+}
