@@ -9,4 +9,5 @@ urlpatterns = [
     path('doc/', views.Doc, name='doc'),
     path('delete/<int:file_id>/', views.delete_file, name='delete_file'),
     path('detect/<int:file_id>/', views.detect_stream, name='detect_stream'),
+    path('api/vehicle-count/', views.get_vehicle_count, name='vehicle_count'),
 ]

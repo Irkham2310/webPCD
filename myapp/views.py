@@ -1,4 +1,4 @@
-from django.http import StreamingHttpResponse
+from django.http import StreamingHttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.conf import settings
 from .detector import TrafficDetector
@@ -18,6 +18,9 @@ def detect_stream(request, file_id):
         detector.process_file(file_path),
         content_type='multipart/x-mixed-replace; boundary=frame'
     )
+
+def get_vehicle_count(request):
+    return JsonResponse({'objects_count': detector.objects_count})
 
 def delete_file(request, file_id):
     doc = get_object_or_404(Document, id=file_id)
@@ -64,7 +67,8 @@ def traffic_view(request):
     return render(request, 'traffic_system.html',{
         'form': form,
         'files':files,
-        'active_file_id': active_file_id
+        'active_file_id': active_file_id,
+        'objects_count': detector.objects_count
         })
 
 def about(request):

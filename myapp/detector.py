@@ -9,6 +9,7 @@ class TrafficDetector:
     def __init__(self, model_rel_path):
         self.model_path = os.path.join(settings.MEDIA_ROOT, model_rel_path)
         self.model = YOLO(self.model_path)
+        self.objects_count = 0  # Store current vehicle count
 
     def process_file(self, file_path):
         ext = os.path.splitext(file_path)[1].lower()
@@ -45,7 +46,11 @@ class TrafficDetector:
             if not ret: break
             
             results = self.model.predict(frame, conf=0.5, verbose=False)
-            annotated_frame = results[0].plot() 
+            frame = results[0].plot() 
+
+            for r in results:
+                boxes = r.boxes.cpu().numpy()
+                self.objects_count = len(boxes)
 
             if time.time() - last_time_update >= 1:
                 if current_timer > 0:
@@ -57,22 +62,22 @@ class TrafficDetector:
                     # Switch to GREEN
                     lampu_state = "GREEN"
                     # If it's quiet, keep green short. If busy, green stays longer to clear traffic.
-                    current_timer = 20 if objects_count > 20 else 10
+                    current_timer = 20 if self.objects_count > 20 else 10
                     
                 else: # If currently GREEN
                     # Switch to RED
                     lampu_state = "RED"
                     # If busy, red stays longer to manage other lanes (simulated).
-                    current_timer = 30 if objects_count > 20 else 15
+                    current_timer = 30 if self.objects_count > 20 else 15
 
             color_map = {"RED": (0, 0, 255), "GREEN": (0, 255, 0)}
             current_color = color_map[lampu_state]
 
             cv2.putText(frame, f"STATUS: {lampu_state}", (20, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, current_color, 3)
             cv2.putText(frame, f"TIMER: {current_timer}s", (20, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-            cv2.putText(frame, f"VEHICLES: {objects_count}", (20, 150), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-            
-            _, buffer = cv2.imencode('.jpg', annotated_frame)
+            cv2.putText(frame, f"VEHICLES: {self.objects_count}", (20, 150), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)    
+
+            _, buffer = cv2.imencode('.jpg', frame)
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + buffer.tobytes() + b'\r\n')
         cap.release()
