@@ -1,0 +1,31 @@
+# Exclude virtual environments
+venv/
+env/
+.venv/
+ENV/
+
+# Exclude local node modules
+node_modules/
+
+# Exclude local database
+db.sqlite3
+db.sqlite3-journal
+
+# Exclude media and uploads (these should be stored in the cloud)
+myapp/media/uploads/
+
+# Exclude caches
+__pycache__/
+*.pyc
+.cache/
+.pytest_cache/
+.vercel/
+
+# Exclude development files
+.env
+.git/
+.gitignore
+DEPLOYMENT.md
+README.md
+LICENSE
+package-lock.json
