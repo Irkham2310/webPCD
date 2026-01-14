@@ -21,9 +21,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy seluruh file project ke dalam container
 COPY . .
 
-# Port default yang diwajibkan oleh Hugging Face Spaces adalah 7860
-EXPOSE 7860
+# Port default Django
+EXPOSE 8000
 
 # Jalankan Django menggunakan Gunicorn
-# Ganti 'Website' dengan nama folder yang berisi file wsgi.py kamu
-CMD ["gunicorn", "--bind", "0.0.0.0:7860", "Website.wsgi"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "config.wsgi"]

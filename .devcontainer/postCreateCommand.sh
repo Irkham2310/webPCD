@@ -1,23 +1,26 @@
 #!/bin/bash
 
+# Update system and install dependencies for OpenCV
+sudo apt-get update && sudo apt-get install -y libgl1
+
 # Update pip
 python -m pip install --upgrade pip
 
-# Install dependencies
-# Note: We use the existing requirements.txt which already lists the CPU versions
+# Install dependencies from requirements.txt
+# We use the --extra-index-url inside the requirements.txt now
 pip install -r requirements.txt
 
-# Install Node dependencies and build CSS
+# Install Node dependencies and build CSS if package.json exists
 if [ -f "package.json" ]; then
     npm install
     npm run build:css
 fi
 
-# Run migrations (using SQLite for simplicity in Codespaces)
-
+# Run migrations
 python manage.py migrate
 
-# Create a superuser automatically (optional, but helpful for testing)
-# echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'admin123') if not User.objects.filter(username='admin').exists() else None" | python manage.py shell
-
-echo "Environment setup complete! Run 'python manage.py runserver' to start the app."
+echo "-------------------------------------------------------"
+echo "Environment setup complete!"
+echo "To start the application, run:"
+echo "python manage.py runserver"
+echo "-------------------------------------------------------"
