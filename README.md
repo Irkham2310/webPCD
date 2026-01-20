@@ -1,11 +1,3 @@
----
-title: PCD
-emoji: 🚀
-colorFrom: blue
-colorTo: green
-sdk: docker
-app_port: 7860
----
 
 # 🚦 Sistem Kontrol Lalu Lintas Pintar (Berbasis YOLO)
 
@@ -23,7 +15,7 @@ Aplikasi web berbasis Django modern yang menggunakan **YOLO (You Only Look Once)
 ## 🛠️ Mulai Cepat
 
 ### 1. Pengujian Langsung (GitHub Codespaces)
-Cara termudah bagi dosen untuk menguji proyek ini adalah melalui **GitHub Codespaces**:
+Cara termudah untuk menguji proyek ini adalah melalui **GitHub Codespaces**:
 1. Buka [Repositori GitHub](https://github.com/NickoIkhwan/webPCD).
 2. Klik tombol hijau **Code** dan pilih **Codespaces**.
 3. Buat codespace baru pada branch `main`.
